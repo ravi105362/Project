@@ -16,12 +16,16 @@ logging.basicConfig(
 class FolderSynchronization:
     source_folder_path: str
     output_folder_path: str
-    sync_interval: int
 
     def sync(self):
-        self._sync_data(self.source_folder_path, self.output_folder_path)
+        try:
+            self._sync_data(self.source_folder_path, self.output_folder_path)
+        except Exception as exc:
+            logging.error(f"Not able to sync {exc}")
 
     def _sync_data(self, source_folder_path, output_folder_path):
+        """This method checks for the differences between two folders"""
+
         comparison = filecmp.dircmp(source_folder_path, output_folder_path)
 
         if comparison.common_dirs:
@@ -39,27 +43,28 @@ class FolderSynchronization:
         if comparison.right_only:
             self._delete(comparison.right_only, output_folder_path)
 
-        left_newer = []
-        right_newer = []
+        source_newer = []
+        output_newer = []
         if comparison.diff_files:
             for d in comparison.diff_files:
-                l_modified = os.stat(
+                source_modified = os.stat(
                     os.path.join(source_folder_path, d)
                 ).st_mtime
-                r_modified = os.stat(
+                output_modified = os.stat(
                     os.path.join(output_folder_path, d)
                 ).st_mtime
-                if l_modified > r_modified:
-                    left_newer.append(d)
+                if source_modified > output_modified:
+                    source_newer.append(d)
                 else:
-                    right_newer.append(d)
-                    left_newer.append(d)
-        self._delete(right_newer, output_folder_path)
-        self._copy(left_newer, source_folder_path, output_folder_path)
+                    output_newer.append(d)
+                    source_newer.append(d)
+        self._delete(output_newer, output_folder_path)
+        self._copy(source_newer, source_folder_path, output_folder_path)
 
     def _copy(self, file_list, src, dest):
         """This method copies a list of files from a source node
         to a destination node"""
+
         for f in file_list:
             srcpath = os.path.join(src, os.path.basename(f))
             if os.path.isdir(srcpath):
@@ -90,6 +95,7 @@ class FolderSynchronization:
     def _delete(self, file_list, src):
         """This methods deletes a list of files from a output
         folder path not in source folder"""
+
         for f in file_list:
             srcpath = os.path.join(src, os.path.basename(f))
             if os.path.isdir(srcpath):
@@ -101,10 +107,12 @@ class FolderSynchronization:
                     + os.path.basename(srcpath)
                     + '" from "'
                     + os.path.dirname(srcpath)
+                    + '"'
                 )
                 logging.info(
                     'Deleted "'
                     + os.path.basename(srcpath)
                     + '" from "'
                     + os.path.dirname(srcpath)
+                    + '"'
                 )
