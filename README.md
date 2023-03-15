@@ -1,21 +1,13 @@
-# To run folder sync
+# Folder Synchronization
 
-## Steps
+## Steps to run
 
-### python3 -m venv venv
+1. python3 -m venv venv
+2. source venv/bin/activate
+3. pip install -r requirements.txt
+4. python src/main.py -s <sourceFolderPath> -o <outputFolderPath> -i <SyncInterval> -l <logsFilePath>
 
-### source venv/bin/activate
+## Features
 
-### pip install -r requirements.txt
-
-### python main.py src/main.py -s <sourceFolderPath> -o <outputFolderPath> -i <SyncInterval> -l <logsFilePath>
-
-TODOs -
-
-1. logging - done
-2. Git commit - done
-3. Tests
-4. Run by copying with the link and re-run
-5. Include some sample folders - done
-6. Error Handling
-7. Add files to gitignore - done
+1. Checks for changes in the source folder at specified interval
+2. Copies/Deletes the files/folders to make output folder replica of source folder
