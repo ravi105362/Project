@@ -37,7 +37,10 @@ class FolderSynchronization:
 
         if comparison.left_only:
             self._copy(
-                comparison.left_only, source_folder_path, output_folder_path
+                comparison.left_only,
+                source_folder_path,
+                output_folder_path,
+                create=True,
             )
 
         if comparison.right_only:
@@ -49,7 +52,7 @@ class FolderSynchronization:
                 source_newer.append(d)
         self._copy(source_newer, source_folder_path, output_folder_path)
 
-    def _copy(self, file_list, src, dest):
+    def _copy(self, file_list, src, dest, create: bool = False):
         """This method copies a list of files from a source node
         to a destination node"""
 
@@ -61,8 +64,11 @@ class FolderSynchronization:
                 )
             else:
                 shutil.copy2(srcpath, dest)
+                text_to_write = "Copied"
+                if create is True:
+                    text_to_write = "Created"
                 print(
-                    'Copied "'
+                    f'{text_to_write} "'
                     + os.path.basename(srcpath)
                     + '" from "'
                     + os.path.dirname(srcpath)
@@ -71,7 +77,7 @@ class FolderSynchronization:
                     + '"'
                 )
                 logging.info(
-                    'Copied "'
+                    f'{text_to_write} "'
                     + os.path.basename(srcpath)
                     + '" from "'
                     + os.path.dirname(srcpath)
