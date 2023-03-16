@@ -8,7 +8,7 @@
 5. pip install -r requirements.txt
 6. python src/main.py -s < fullSourceFolderPath > -o < fullOutputFolderPath > -i < syncInterval > -l < logsFilePath >
  
- EG:- python src/main.py -s /Users/nirjharijankar/ravi/projects/test-folder/Project/sourceFolder -o /Users/nirjharijankar/ravi/projects/test-folder/Project/outputFolder -i 5 -l /Users/nirjharijankar/ravi/projects/test-folder/logs
+ EG:- python src/main.py -s /Users/nirjharijankar/ravi/projects/test-folder/Project/sourceFolder -o /Users/nirjharijankar/ravi/projects/test-folder/Project/outputFolder -i 5 -l /Users/nirjharijankar/ravi/projects/test-folder/logs/log.log
  
 ## Features
 
