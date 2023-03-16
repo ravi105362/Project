@@ -18,6 +18,7 @@ class FolderSynchronization:
     output_folder_path: str
 
     def sync(self):
+        """This method calls the main sync method with params"""
         try:
             self._sync_data(self.source_folder_path, self.output_folder_path)
         except Exception as exc:
@@ -28,6 +29,7 @@ class FolderSynchronization:
 
         comparison = filecmp.dircmp(source_folder_path, output_folder_path)
 
+        # For common files
         if comparison.common_dirs:
             for d in comparison.common_dirs:
                 self._sync_data(
@@ -35,6 +37,7 @@ class FolderSynchronization:
                     os.path.join(output_folder_path, d),
                 )
 
+        # For files only in source
         if comparison.left_only:
             self._copy(
                 comparison.left_only,
@@ -43,9 +46,11 @@ class FolderSynchronization:
                 create=True,
             )
 
+        # For files only in replica
         if comparison.right_only:
             self._delete(comparison.right_only, output_folder_path)
 
+        # For files in both but updated
         source_newer = []
         if comparison.diff_files:
             for d in comparison.diff_files:
