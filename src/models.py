@@ -44,21 +44,9 @@ class FolderSynchronization:
             self._delete(comparison.right_only, output_folder_path)
 
         source_newer = []
-        output_newer = []
         if comparison.diff_files:
             for d in comparison.diff_files:
-                source_modified = os.stat(
-                    os.path.join(source_folder_path, d)
-                ).st_mtime
-                output_modified = os.stat(
-                    os.path.join(output_folder_path, d)
-                ).st_mtime
-                if source_modified > output_modified:
-                    source_newer.append(d)
-                else:
-                    output_newer.append(d)
-                    source_newer.append(d)
-        self._delete(output_newer, output_folder_path)
+                source_newer.append(d)
         self._copy(source_newer, source_folder_path, output_folder_path)
 
     def _copy(self, file_list, src, dest):
