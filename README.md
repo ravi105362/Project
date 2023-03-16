@@ -1,12 +1,15 @@
 # Folder Synchronization
 
 ## Steps to run
-
-1. python3 -m venv venv
-2. source venv/bin/activate
-3. pip install -r requirements.txt
-4. python src/main.py -s < sourceFolderPath > -o < outputFolderPath > -i < SyncInterval > -l < logsFilePath >
-
+1. git clone https://github.com/ravi105362/Project.git
+2. cd Project 
+3. python3 -m venv venv
+4. source venv/bin/activate
+5. pip install -r requirements.txt
+6. python src/main.py -s < fullSourceFolderPath > -o < fullOutputFolderPath > -i < syncInterval > -l < logsFilePath >
+ 
+ EG:- python src/main.py -s /Users/nirjharijankar/ravi/projects/test-folder/Project/sourceFolder -o /Users/nirjharijankar/ravi/projects/test-folder/Project/outputFolder -i 5 -l /Users/nirjharijankar/ravi/projects/test-folder/logs
+ 
 ## Features
 
 1. Checks for changes in the source folder at specified interval
